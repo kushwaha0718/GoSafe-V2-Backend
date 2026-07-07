@@ -1,0 +1,25 @@
+# Maven build target directory
+target/
+
+# IDE settings
+.idea/
+*.iml
+*.iws
+
+# Git folder and config
+.git/
+.gitignore
+
+# H2 database files (avoid copying local DB state to container build)
+*.db
+gosafe_db*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Documentation and Docker files themselves
+Dockerfile
+docker-compose.yml
+README.md
+DEPLOYMENT.md

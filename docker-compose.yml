@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  gosafe-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gosafe-backend-app
+    ports:
+      - "8080:8080"
+    environment:
+      # Direct Spring Boot to place H2 database file in /app/data so it can be persisted by volume mounting
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/gosafe_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      # Make sure JWT secret key matches or is customized for production
+      - GOSAFE_JWTSECRET=gosafeSecretKeyJWTForAuthenticationNeedsToBeLongEnoughForHMAC256AndSecureEnoughForProductionUse!
+    volumes:
+      # Persist the database files using a named Docker volume
+      - gosafe-db-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  gosafe-db-data:
+    driver: local
