@@ -55,12 +55,10 @@ public class Journey {
     @Column(name = "lighting_level")
     private String lightingLevel;
 
-    @Lob
-    @Column(name = "attached_image", columnDefinition = "CLOB")
+    @Column(name = "attached_image", columnDefinition = "TEXT")
     private String attachedImage; // Base64 encoded image
 
-    @Lob
-    @Column(name = "route_screenshot", columnDefinition = "CLOB")
+    @Column(name = "route_screenshot", columnDefinition = "TEXT")
     private String routeScreenshot; // Base64 encoded screenshot of the route
 
     @Column(name = "created_at")
