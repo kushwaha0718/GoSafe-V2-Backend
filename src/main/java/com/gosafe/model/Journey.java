@@ -61,6 +61,12 @@ public class Journey {
     @Column(name = "route_screenshot", columnDefinition = "TEXT")
     private String routeScreenshot; // Base64 encoded screenshot of the route
 
+    @Column(name = "current_lat")
+    private Double currentLat;
+
+    @Column(name = "current_lng")
+    private Double currentLng;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -120,6 +126,12 @@ public class Journey {
 
     public String getRouteScreenshot() { return routeScreenshot; }
     public void setRouteScreenshot(String routeScreenshot) { this.routeScreenshot = routeScreenshot; }
+
+    public Double getCurrentLat() { return currentLat; }
+    public void setCurrentLat(Double currentLat) { this.currentLat = currentLat; }
+
+    public Double getCurrentLng() { return currentLng; }
+    public void setCurrentLng(Double currentLng) { this.currentLng = currentLng; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

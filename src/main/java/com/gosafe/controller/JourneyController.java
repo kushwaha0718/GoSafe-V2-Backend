@@ -59,6 +59,36 @@ public class JourneyController {
         return ResponseEntity.ok(journeyOpt.get());
     }
 
+    @PutMapping("/{id}/location")
+    public ResponseEntity<?> updateJourneyLocation(
+            @PathVariable Long id,
+            @RequestParam Double lat,
+            @RequestParam Double lng) {
+        
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof UserDetailsImpl)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Unauthorized user context."));
+        }
+        
+        Long userId = ((UserDetailsImpl) principal).getId();
+        Optional<Journey> journeyOpt = journeyRepository.findById(id);
+        
+        if (journeyOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Journey journey = journeyOpt.get();
+        if (!userId.equals(journey.getUserId())) {
+            return ResponseEntity.status(403).body(new MessageResponse("Error: Unauthorized to update this journey location."));
+        }
+        
+        journey.setCurrentLat(lat);
+        journey.setCurrentLng(lng);
+        Journey updated = journeyRepository.save(journey);
+        
+        return ResponseEntity.ok(updated);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJourney(@PathVariable Long id) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
