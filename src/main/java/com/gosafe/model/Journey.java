@@ -31,9 +31,8 @@ public class Journey {
     @Column(name = "destination_lng", nullable = false)
     private Double destinationLng;
 
-    @Lob
-    @Column(name = "route_geometry", columnDefinition = "CLOB")
-    private String routeGeometry; // GeoJSON geometry string representation
+    @Column(name = "route_geometry", columnDefinition = "TEXT")
+    private String routeGeometry;
 
     @Column(name = "duration")
     private Double duration; // minutes
