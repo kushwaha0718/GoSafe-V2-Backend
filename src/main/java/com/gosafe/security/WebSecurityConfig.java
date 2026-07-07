@@ -99,6 +99,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(new AntPathRequestMatcher("/error")).permitAll() // Prevent 401 on
                                                                                                   // non-existent
                                                                                                   // endpoints
+                                .requestMatchers("/api/health/check").permitAll()
                                 .anyRequest().authenticated());
 
         // Required for H2 Console frame display
