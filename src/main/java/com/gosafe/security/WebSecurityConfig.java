@@ -62,8 +62,9 @@ public class WebSecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-      CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "http://localhost:3000"));
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("https://gosafe.onrender.com", "http://localhost:*",
+                "http://127.0.0.1:*", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Access-Control-Allow-Origin"));
         configuration.setExposedHeaders(List.of("Authorization"));
@@ -76,18 +77,29 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> 
-                auth.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/api/sos/trigger")).permitAll() // Allow guest SOS triggers
-                    .requestMatchers(new AntPathRequestMatcher("/api/journeys/share/**")).permitAll() // Public tracking access
-                    .requestMatchers(new AntPathRequestMatcher("/api/location/**")).permitAll() // Public geocoding proxy access
-                    .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll() // Enable local database testing
-                    .requestMatchers(new AntPathRequestMatcher("/error")).permitAll() // Prevent 401 on non-existent endpoints
-                    .anyRequest().authenticated()
-            );
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(
+                        auth -> auth.requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/api/sos/trigger")).permitAll() // Allow
+                                                                                                            // guest SOS
+                                                                                                            // triggers
+                                .requestMatchers(new AntPathRequestMatcher("/api/journeys/share/**")).permitAll() // Public
+                                                                                                                  // tracking
+                                                                                                                  // access
+                                .requestMatchers(new AntPathRequestMatcher("/api/location/**")).permitAll() // Public
+                                                                                                            // geocoding
+                                                                                                            // proxy
+                                                                                                            // access
+                                .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll() // Enable
+                                                                                                          // local
+                                                                                                          // database
+                                                                                                          // testing
+                                .requestMatchers(new AntPathRequestMatcher("/error")).permitAll() // Prevent 401 on
+                                                                                                  // non-existent
+                                                                                                  // endpoints
+                                .anyRequest().authenticated());
 
         // Required for H2 Console frame display
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
